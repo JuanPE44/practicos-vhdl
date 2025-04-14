@@ -5,14 +5,14 @@ entity Simulacion_ej6 is
   --  
 end entity;
 
-architecture Behavioral of Simulacion_ej2 is
+architecture Behavioral of Simulacion_ej6 is
 
   component full_adder1
     port (A : in  std_logic;
           B : in  std_logic;
           C0 : in  std_logic;
-          C1 : out std_logic_vector(1 downto 0);
-          S0 : out std_logic_vector(1 downto 0)
+          C1 : out std_logic;
+          S0 : out std_logic
           );
   end component;
 
@@ -33,12 +33,12 @@ begin
       B => B_s,
       C0 => C0_s,
       S0 => S0_s,
-      C1 => C1_s,
-      
+      C1 => C1_s
     );
 
   process
   begin
+    C0_s <= '0';
     A_s <= '0';
     B_s <= '0';
     wait for 100 ns;
