@@ -26,14 +26,21 @@ library IEEE;
   use IEEE.numeric_std.all;
   use IEEE.std_logic_unsigned.all;
 
-architecture Behavioral of full_adder8 is
+  entity sumador8 is
+    port (A : in  std_logic_vector(7 downto 0);
+          B : in  std_logic_vector(7 downto 0);
+          S  : out std_logic_vector(8 downto 0)
+         );
+  end entity;
+
+architecture Behavioral of sumador8 is
   component full_adder1
     port (
-      A_n  : in std_logic;
-      B_n  : in std_logic;
-      C0_n : in std_logic;
-      C1_n : out std_logic;
-      S0_n : out std_logic
+      A  : in std_logic;
+      B  : in std_logic;
+      C0 : in std_logic;
+      C1 : out std_logic;
+      S0 : out std_logic
     );
   end component;
 
@@ -43,16 +50,15 @@ begin
   C(0) <= '0'; 
 
   gen_adders: for i in 0 to 7 generate
-    U: full_adder_bit
+    U: full_adder1
       port map (
-        A_n  => A(i),
-        B_n  => B(i),
-        C0_n => C(i),
-        S0_n => S(i),
-        C1_n => C(i+1)
+        A => A(i),
+        B  => B(i),
+        C0 => C(i),
+        S0 => S(i),
+        C1 => C(i+1)
       );
   end generate;
 
   S(8) <= C(8); 
 end architecture;
-
