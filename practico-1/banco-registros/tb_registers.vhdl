@@ -6,39 +6,57 @@ entity Simulacion_registers is
 end entity;
 
 architecture behavior of Simulacion_registers is
+
   component registers 
     port(
-      clk ,rst,wr : in std_logic;
-      reg1_rd, reg2_rd, reg_wr : in std_logic_vector(4 downto 0);
-      data_wr : in std_logic_vector(31 downto 0);
+      clk      : in std_logic;
+      rst      : in std_logic;
+      wr       : in std_logic;
+      reg1_rd  : in std_logic_vector(4 downto 0);
+      reg2_rd  : in std_logic_vector(4 downto 0);
+      reg_wr   : in std_logic_vector(4 downto 0);
+      data_wr  : in std_logic_vector(31 downto 0);
       data1_rd : out std_logic_vector(31 downto 0);
       data2_rd : out std_logic_vector(31 downto 0)
     );
   end component;
 
   -- Señales para los puertos del banco de registros
-  signal clk, rst, wr : std_logic := '0';
+  signal clk_tb, rst, wr : std_logic := '0';
   signal reg1_rd, reg2_rd, reg_wr : std_logic_vector(4 downto 0) := (others => '0');
   signal data_wr : std_logic_vector(31 downto 0) := (others => '0');
   signal data1_rd, data2_rd : std_logic_vector(31 downto 0);
 
 begin
+
+  -- Instanciación del módulo a testear
   UUT: registers
     port map(
-      clk => clk,
-      rst => rst,
-      wr => wr,
-      reg1_rd => reg1_rd,
-      reg2_rd => reg2_rd,
-      reg_wr => reg_wr,
-      data_wr => data_wr,
+      clk      => clk_tb,
+      rst      => rst,
+      wr       => wr,
+      reg1_rd  => reg1_rd,
+      reg2_rd  => reg2_rd,
+      reg_wr   => reg_wr,
+      data_wr  => data_wr,
       data1_rd => data1_rd,
       data2_rd => data2_rd
     );
 
-  clk <= not clk after 10 ns;  -- Reloj con periodo de 20 ns
+  -- Proceso para generar el reloj (clock)
+  clk_process : process
+  begin
+    while now < 300 ns loop  -- Duración total de simulación
+      clk_tb <= '0';
+      wait for 10 ns;
+      clk_tb <= '1';
+      wait for 10 ns;
+    end loop;
+    wait;
+  end process;
 
-  process
+  -- Estímulos de prueba
+  stim_proc: process
   begin
     -- Inicialización
     rst <= '1';  -- Reset activo
@@ -47,42 +65,42 @@ begin
     wait for 20 ns;
 
     -- Escritura en el registro 1
-    reg_wr <= "00001";  -- Escribir en el registro 1
-    data_wr <= x"00000010";  -- Valor a escribir (16 en decimal)
-    wr <= '1';  -- Habilitar escritura
+    reg_wr <= "00001";
+    data_wr <= x"00000010";
+    wr <= '1';
     wait for 20 ns;
-    wr <= '0';  -- Deshabilitar escritura
+    wr <= '0';
     wait for 20 ns;
 
-    -- Leer el registro 1
-    reg1_rd <= "00001";  -- Leer el registro 1
-    wait for 20 ns;  -- Esperar para la lectura
+    -- Leer registro 1
+    reg1_rd <= "00001";
+    wait for 20 ns;
 
     -- Escritura en el registro 2
-    reg_wr <= "00010";  -- Escribir en el registro 2
-    data_wr <= x"00000020";  -- Valor a escribir (32 en decimal)
-    wr <= '1';  -- Habilitar escritura
+    reg_wr <= "00010";
+    data_wr <= x"00000020";
+    wr <= '1';
     wait for 20 ns;
-    wr <= '0';  -- Deshabilitar escritura
+    wr <= '0';
     wait for 20 ns;
 
-    -- Leer el registro 2
-    reg2_rd <= "00010";  -- Leer el registro 2
-    wait for 20 ns;  -- Esperar para la lectura
+    -- Leer registro 2
+    reg2_rd <= "00010";
+    wait for 20 ns;
 
     -- Escritura en el registro 3
-    reg_wr <= "00011";  -- Escribir en el registro 3
-    data_wr <= x"00000030";  -- Valor a escribir (48 en decimal)
-    wr <= '1';  -- Habilitar escritura
+    reg_wr <= "00011";
+    data_wr <= x"00000030";
+    wr <= '1';
     wait for 20 ns;
-    wr <= '0';  -- Deshabilitar escritura
+    wr <= '0';
     wait for 20 ns;
 
-    -- Leer el registro 3
-    reg1_rd <= "00011";  -- Leer el registro 3
-    wait for 20 ns;  -- Esperar para la lectura
+    -- Leer registro 3
+    reg1_rd <= "00011";
+    wait for 20 ns;
 
-    -- Fin de la simulación
     wait;
   end process;
+
 end architecture;
