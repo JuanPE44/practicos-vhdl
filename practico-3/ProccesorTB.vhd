@@ -120,7 +120,7 @@ begin
 	--memoria de datos
 	Data_Mem : Memory
 	generic map (
-    	C_FUNC_CLK  => '1',
+    	C_FUNC_CLK  => '0',
 	   C_ELF_FILENAME     => "data",
       C_MEM_SIZE         => 1024
    )	

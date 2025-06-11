@@ -57,7 +57,7 @@ architecture processor_arch of Processor is
     signal ALUOp: std_logic_vector(1 downto 0); 
 
 -- otras 
-     signal reg_wr: std_logic_vector(4 downto 0); -- direcci�n del registro de escritura
+    signal reg_wr: std_logic_vector(4 downto 0); -- direcci�n del registro de escritura
     signal data1_reg, data2_reg: std_logic_vector(31 downto 0); -- registros le�dos desde el banco de registro
     signal data_w_reg: std_logic_vector(31 downto 0); -- dato a escribir en el banco de registros
     
@@ -65,7 +65,7 @@ architecture processor_arch of Processor is
     signal pc_branch: std_logic_vector(31 downto 0); -- salto por beq
     signal pc_jump: std_logic_vector(31 downto 0); -- para salto incondicional
     signal reg_pc, next_reg_pc: std_logic_vector(31 downto 0); -- correspondientes al registro del program counter
- 
+
     signal ALU_oper_b : std_logic_vector(31 downto 0); -- corrspondiente al segundo operando de ALU
     signal ALU_control: std_logic_vector(2 downto 0); -- se�ales de control de la ALU
     signal ALU_zero: std_logic; -- flag zero de la ALU
@@ -85,7 +85,7 @@ begin
     
 -- Instanciaci�n de banco de registros
     E_Regs:  Registers 
-	   Port map (
+	    Port map (
 			clk => clk, 
 			reset => reset, 
 			wr => RegWrite,
@@ -160,6 +160,7 @@ begin
     -- mux que maneja carga de PC
     next_reg_pc <= pc_jump when (Jump = '1') else
                    pc_branch when ((ALU_zero='1') and (Branch='1')) else pc_4;
+
 
 
 -- Contador de programa
