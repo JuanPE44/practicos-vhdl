@@ -149,5 +149,3 @@ begin
 
 end ProcessorTB_arch;
 
-
-
